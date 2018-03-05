@@ -11,20 +11,23 @@ giving developers and users confidence that their software works as intended. Pr
 is a significant step forward compared to traditional unit tests, exercising code with randomly
 generated inputs and ensuring that key properties hold. However, both of these techniques tend to be
 used at the level of individual functions. Many important properties of an application are only
-relevant at a higher level, and depend on the state of the application under test. If you're
-application is written in Haskell, then the hedgehog package offers a very useful framework for
-these higher level, state dependent tests.
+relevant at a higher level, and depend on the state of the application under test. The Haskell
+library hedgehog, a relative newcomer to the property based testing world, includes facilities
+for property-based state machine testing, giving developers a foundation on which to build these
+more complicated tests.
 
 In this talk, Andrew will give you an introduction to state machine property testing using hedgehog.
 He'll start with a quick refresher on property based testing, followed by a quick introduction to
 state machines and the sorts of applications they can be used to model. From there, he'll take you
 on a guided introduction of hedgehog's state machine testing facilities. Finally, Andrew will
 present a series of examples to show off what you can do and hopefully give you enough ideas to
-start applying this tool to your own projects.
+start applying this tool to your own projects. The application being tested will be a servant web
+application, and examples will include testing fundamentals such as content creation and deletion,
+uniqueness constraints, and authentication.
 
-An intermediate knowledge of Haskell is expected, and familiarity with property based testing would
-be greatly beneficial. The slides and demo application will be available after the talk for people
-to study further.
+An intermediate knowledge of Haskell is expected, and familiarity with property based testing will
+be beneficial. The slides and demo application will be available after the talk for people to study
+further.
 
 ## Target audience
 
