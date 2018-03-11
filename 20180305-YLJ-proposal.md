@@ -1,7 +1,9 @@
 # Hedgehog State Machine Testing
 
 **Category**: Technique
+
 **Level**: Intermediate
+
 **Session Type**: Talk
 
 ## Abstract
