@@ -33,34 +33,31 @@ in detail.
 
 ## Target audience
 
-The target audience is Haskell developers working on applications that can be modelled using state
-machines (e.g. web applications), and who believe in testing their code. People without Haskell
-experience would also benefit from learning about state machine property testing, although they
-would admittedly get less out of it than those using Haskell.
+The target audience is developers working on applications that can be modelled using state machines
+(e.g. web applications), and who want to test more complex properties of their software.
 
 ## Session prerequisite
 
-Attendees should be comfortable with the Haskell programming language. A basic understanding of
-property based testing, ideally using the hedgehog library, is expected; as is a basic understanding
-of web programming.
+A basic understanding of property based testing, ideally using the hedgehog library, is expected; as
+is a basic understanding of web programming. Knowledge of Haskell is beneficial, but not necessary.
 
 ## Outline/structure
 
 The basic outline of the talk is as follows
 
-- Introduce myself and work context in which this has been used
+- Introduce myself and work context in which this has been used.
 - Quick refresher of/intro to hedgehog and property based testing. As this is expected knowledge, this
   will be very brief.
-- An introduction to state machine property testing in hedgehog
-    + What is a state machine
-    + Examples of apps that can be modeled as state machines
-    + Overview of hedgehog's approach and key types/functions
-- Example 1: a toy example of an in-memory system with two states
-- Example 2: a CRUD web application
+- An introduction to state machine property testing in hedgehog.
+    + What is a state machine?
+    + Examples of apps that can be modeled as state machines.
+    + Overview of hedgehog's approach and key types/functions.
+- Example 1: a toy example of an in-memory system with two states.
+- Example 2: a CRUD web application.
 
 It is intended that example 2 builds in difficulty. I do not have an exact list of properties, as
 this will depend on timing and feedback from test runs. Below is a list of some properties and their
-prorgression to give a feel for what I have in mind. I doubt I'll have time to cover everything in
+progression to give a feel for what I have in mind. I doubt I'll have time to cover everything in
 this list, however I hope it demonstrates that there are plenty of examples to draw on.
 
 1. Creating an item increases the number of items when listed
