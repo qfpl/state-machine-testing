@@ -60,16 +60,16 @@ this will depend on timing and feedback from test runs. Below is a list of some 
 progression to give a feel for what I have in mind. I doubt I'll have time to cover everything in
 this list, however I hope it demonstrates that there are plenty of examples to draw on.
 
-1. Creating an item increases the number of items when listed
-1. Deleting an item decreases the count of items when listed
-1. Inserted items are retrieved unchanged
-1. Deleted items cannot be retrieved
+1. Creating an item increases the number of items when listed.
+1. Deleting an item decreases the count of items when listed.
+1. Inserted items are retrieved unchanged.
+1. Deleted items cannot be retrieved.
 1. Inserting data that would violate a uniqueness constraint does not insert the data and returns
    the correct error.
-1. Unauthenticated users can't access protected content and receive the correct error
-1. Authenticated users can access protected content
-1. Users can't login to the same account multiple times
-
+1. Unauthenticated users can't access protected content and receive the correct error.
+1. Authenticated users can access protected content.
+1. Users can't login to the same account multiple times.
+.
 Example 1 might be skipped in the interests of time, in which case the first property demonstrated
 in the web app example will be very simple.
 
