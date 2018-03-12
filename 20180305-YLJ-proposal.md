@@ -8,27 +8,27 @@
 
 ## Abstract
 
-Automated testing is key to ensuring the ongoing health and wellbeing of any software project,giving
-developers and users confidence that their software works as intended. Property based testingis a
-significant step forward compared to traditional unit tests, exercising code with randomlygenerated
-inputs to ensure that key properties hold. However, both of these techniques tend to beused at the
-level of individual functions. Many important properties of an application only appearat a higher
-level, and depend on the state of the application under test. The Haskell libraryhedgehog, a
-relative newcomer to the property based testing world, includes facilities forproperty-based state
-machine testing, giving developers a foundation on which to build these morecomplicated tests.
+Automated testing is key to ensuring the ongoing health and well-being of any software project,giving
+developers and users confidence that their software works as intended. Property based testing is a
+significant step forward compared to traditional unit tests, exercising code with randomly generated
+inputs to ensure that key properties hold. However, both of these techniques tend to be used at the
+level of individual functions. Many important properties of an application only appear at a higher
+level, and depend on the state of the application under test. The Haskell library hedgehog, a
+relative newcomer to the property based testing world, includes facilities for property-based state
+machine testing, giving developers a foundation on which to build these more complicated tests.
 
 In this talk, Andrew will give you an introduction to state machine property testing using
 hedgehog.He'll start with a quick refresher on property based testing, followed by a brief
-introduction tostate machines and the sorts of applications they can be used to model. From there,
-he'll take youon a guided tour of hedgehog's state machine testing facilities. Finally, Andrew will
-present aseries of examples to show off what you can do and hopefully give you enough ideas to start
-applyingthis tool to your own projects. The application being tested will be a servant web
-application, andexamples will include testing fundamentals such as content creation and deletion,
-uniquenessconstraints, and authentication.
+introduction to state machines and the sorts of applications they can be used to model. From there,
+he'll take you on a guided tour of hedgehog's state machine testing facilities. Finally, Andrew will
+present a series of examples to show off what you can do and hopefully give you enough ideas to start
+applying this tool to your own projects. The application being tested will be a servant web
+application, and examples will include testing fundamentals such as content creation and deletion,
+uniqueness constraints, and authentication.
 
 An intermediate knowledge of Haskell and familiarity with property based testing will be
 beneficial,but not essential. The slides and demo application will be available after the talk for
-people tostudy in detail.
+people to study in detail.
 
 ## Target audience
 
