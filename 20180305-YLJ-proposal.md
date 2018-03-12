@@ -11,7 +11,7 @@
 Automated testing is key to ensuring the ongoing health and wellbeing of any software project,
 giving developers and users confidence that their software works as intended. Property based testing
 is a significant step forward compared to traditional unit tests, exercising code with randomly
-generated inputs and ensuring that key properties hold. However, both of these techniques tend to be
+generated inputs to ensure that key properties hold. However, both of these techniques tend to be
 used at the level of individual functions. Many important properties of an application only appear
 at a higher level, and depend on the state of the application under test. The Haskell library
 hedgehog, a relative newcomer to the property based testing world, includes facilities for
@@ -27,9 +27,9 @@ this tool to your own projects. The application being tested will be a servant w
 examples will include testing fundamentals such as content creation and deletion, uniqueness
 constraints, and authentication.
 
-An intermediate knowledge of Haskell is expected, and familiarity with property based testing will
-be beneficial. The slides and demo application will be available after the talk for people to study
-in detail.
+An intermediate knowledge of Haskell and familiarity with property based testing will be beneficial,
+but not essential. The slides and demo application will be available after the talk for people to
+study in detail.
 
 ## Target audience
 
