@@ -35,22 +35,23 @@ What else can be modelled as a state machine?
 
 ## Web app state machine
 
-
--------------   ---------------------------
-States          Database + in-memory
-Transitions     HTTP requests
-Initial state   Running app with fresh data
--------------   ---------------------------
+-----------------   ---------------------------
+**States**          Database + in-memory
+**Transitions**     HTTP requests
+**Initial state**   App before any requests
+-----------------   ---------------------------
 
 ## Example: adding users
 
 ##
 
-Property: adding a user increments the number of users by one
+Property: adding a user increments user count
 
-Endpoint   Action        Model state
---------   -----------   -----------
-/add       Adds a user   counter
+-----------------   ---------------------------
+**States**          Count of users
+**Transitions**     `/add-user`
+**Initial state**   0
+-----------------   ---------------------------
 
 ## { data-background-image="images/user-count.svg"
       data-background-color="white"
