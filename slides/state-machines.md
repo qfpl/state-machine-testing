@@ -24,3 +24,37 @@
       data-background-transition="none"
     }
 
+##
+
+<!-- TODO: if you have time, have a slide per example with a state machine diagram -->
+What else can be modelled as a state machine?
+
+- Traffic lights
+- Automated checkouts
+- Web applications
+
+## Web app state machine
+
+
+-------------   ---------------------------
+States          Database + in-memory
+Transitions     HTTP requests
+Initial state   Running app with fresh data
+-------------   ---------------------------
+
+## Example: adding users
+
+##
+
+Property: adding a user increments the number of users by one
+
+Endpoint   Action        Model state
+--------   -----------   -----------
+/add       Adds a user   counter
+
+## { data-background-image="images/user-count.svg"
+      data-background-color="white"
+      data-background-size="80%"
+      data-background-transition="none"
+    }
+
