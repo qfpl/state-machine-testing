@@ -49,7 +49,7 @@ Property: adding a user increments user count
 
 -----------------   ---------------------------
 **States**          Count of users
-**Transitions**     `/add-user`
+**Transitions**     `/add`
 **Initial state**   0
 -----------------   ---------------------------
 
