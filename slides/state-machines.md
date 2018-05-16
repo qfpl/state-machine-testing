@@ -43,19 +43,19 @@ What else can be modelled as a state machine?
 
 ## Example: adding users
 
+## { data-background-image="images/user-count.svg"
+      data-background-color="white"
+      data-background-size="80%"
+      data-background-transition="none"
+    }
+
 ##
 
 Property: adding a user increments user count
 
 -----------------   ---------------------------
 **States**          Count of users
-**Transitions**     `/add`
+**Transitions**     `/register`
 **Initial state**   0
 -----------------   ---------------------------
-
-## { data-background-image="images/user-count.svg"
-      data-background-color="white"
-      data-background-size="80%"
-      data-background-transition="none"
-    }
 

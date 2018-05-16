@@ -29,6 +29,8 @@ in
           $src/slides/intro.md \
           $src/slides/property-based-testing.md \
           $src/slides/state-machines.md \
+          $src/slides/leaderboard.md \
+          $src/slides/state-machine-testing.md \
           > slides.md
       pandoc -i -t revealjs --slide-level=2 --template=$src/template.revealjs --variable=codedir:$out --variable=transition:none --no-highlight -s slides.md -o index.html
       rm slides.md
