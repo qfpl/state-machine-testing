@@ -68,9 +68,6 @@ separately.
 ```haskell
 newtype LeaderboardState (v :: * -> *) =
   LeaderboardState Int
-  
-deriving instance Show1 v => Show (LeaderboardState v)
-deriving instance Eq1 v => Eq (LeaderboardState v)
 ```
 
 ##
@@ -93,9 +90,9 @@ YET TO BE CONFIRMED
 ```haskell
 newtype RegFirst (v :: * -> *) =
     RegFirst RegisterPlayer
-  deriving (Eq, Show)
-instance HTraversable RegFirst where
-  htraverse _ (RegFirst rp)          = pure (RegFirst rp)
+
+newtype RegFirstForbidden (v :: * -> *) =
+  RegFirstForbidden RegisterPlayer
 ```
 
 ```haskell
