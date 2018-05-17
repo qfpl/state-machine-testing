@@ -372,28 +372,47 @@ requests, running them, updating state, and checking post conditions.
 ##
 
 ```haskell
-gen (SimpleState registeredFirst) =
-  Just (RegFirst <$> genRegPlayerRandomAdmin)
-  -- if registeredFirst
-  -- then Nothing
-  -- else Just (RegFirst <$> genRegPlayerRandomAdmin)
+let
+  gen (SimpleState registeredFirst) =
+    Just (RegFirst <$> genRegPlayerRandomAdmin)
+    -- if registeredFirst
+    -- then Nothing
+    -- else Just (RegFirst <$> genRegPlayerRandomAdmin)
+
+
+
+
+
+
+
+
+
 ```
 
 ##
 
 ```haskell
--- let bindings elided
-in
-  Command gen execute [
-    --Require $ \(SimpleState registeredFirst) _input ->
-    --  not registeredFirst
-    -- ...
-  ]
+let
+  gen (SimpleState registeredFirst) =
+    Just (RegFirst <$> genRegPlayerRandomAdmin)
+    -- if registeredFirst
+    -- then Nothing
+    -- else Just (RegFirst <$> genRegPlayerRandomAdmin)
+  execute (RegFirst rp) =
+     evalEither =<< successClient env (registerFirst rp)
+
+
+
+
+
+
+
 ```
 
 ##
 
 ```haskell
+let
   gen (SimpleState registeredFirst) =
     Just (RegFirst <$> genRegPlayerRandomAdmin)
     -- if registeredFirst
@@ -403,8 +422,10 @@ in
      evalEither =<< successClient env (registerFirst rp)
 in
   Command gen execute [
-    --Require $ \(SimpleState registeredFirst) _input -> not registeredFirst
--- elided
+    --Require $ \(SimpleState registeredFirst) _input ->
+    --  not registeredFirst
+    -- Update and Ensures the same
+  ]
 ```
 
 ##
