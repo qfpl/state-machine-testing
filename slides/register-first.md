@@ -351,7 +351,7 @@ propRegisterFirst env reset =
 `property` defaults to 100 test passes required
 </div>
 
-## Output
+## Output - success
 
 ```
 leaderboard
@@ -366,4 +366,12 @@ All 1 tests passed (6.97s)
 Given 100 test runs with up to 100 requests in each, theoretically generating 10,000
 requests, running them, updating state, and checking post conditions.
 </div>
+
+## Output - failure
+
+![register first error](images/reg-first-error.png)\
+
+##
+
+![register first error commands](images/reg-first-error-cmds.png)\
 
