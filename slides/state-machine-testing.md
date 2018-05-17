@@ -59,54 +59,146 @@ separately.
 - Provide inputs to future commands when executing them.
 - Provide values to property tests.
 
-## Example1: counting registrations
+## Commands
 
-## State
+Bundle together:
 
-##
-
-```haskell
-newtype LeaderboardState (v :: * -> *) =
-  LeaderboardState Int
-```
-
-##
-
-Why the `(v :: * -> *)` type parameter?
-
-<div class="notes">
-YET TO BE CONFIRMED
-- A `Symbolic` and `Concrete` state are kept --- symbolic for generating inputs,
-  and a concrete one to provide the actual values to inputs.
-- Need HTraversable instance to change inputs from symbolic to concrete, but
-  states are never swapped --- both update independently. This is why `Update`
-  needs to be polymorphic.
-</div>
-
-## Actions
+- Generation of inputs
+- Execution of those inputs
+- Callbacks used by hedgehog
 
 ##
 
 ```haskell
-newtype RegFirst (v :: * -> *) =
-    RegFirst RegisterPlayer
+data Command n m state =
+  Command {
+      commandGen ::
+        state Symbolic -> Maybe (n (input Symbolic))
 
-newtype RegFirstForbidden (v :: * -> *) =
-  RegFirstForbidden RegisterPlayer
-```
 
-```haskell
-data RegisterFirst = RegisterFirst RegisterPlayer
-data Register = Register RegisterPlayer
-data Me = Me
-data Count = Count
+
+
+
+
+    }
 ```
 
 ##
 
 ```haskell
-register       :: SAC.Token -> RegisterPlayer -> ClientM ResponsePlayer
-registerFirst  :: RegisterPlayer -> ClientM ResponsePlayer
-me             :: SAC.Token -> ClientM Player
-getPlayerCount :: ClientM PlayerCount
+data Command n m state =
+  Command {
+      commandGen ::
+        state Symbolic -> Maybe (n (input Symbolic))
+
+    , commandExecute ::
+        input Concrete -> m output
+
+
+
+    }
 ```
+
+##
+
+```haskell
+data Command n m state =
+  Command {
+      commandGen ::
+        state Symbolic -> Maybe (n (input Symbolic))
+
+    , commandExecute ::
+        input Concrete -> m output
+
+    , commandCallbacks ::
+        [Callback input output state]
+    }
+```
+
+## Callbacks
+
+Are one of:
+
+- Precondition to check that an action is still valid when shrinking.
+- State update --- used for both generation and execution.
+- Postcondition that checks properties hold after execution
+
+##
+
+```haskell
+data Callback input output state =
+    Require ( state Symbolic
+              -> input Symbolic
+              -> Bool)
+
+
+
+
+
+
+
+
+
+
+
+```
+
+##
+
+```haskell
+data Callback input output state =
+    Require ( state Symbolic
+              -> input Symbolic
+              -> Bool)
+  | Update ( forall v. Ord1 v
+             => state v
+             -> input v
+             -> Var output v
+             -> state v)
+
+
+
+
+
+
+```
+
+##
+
+```haskell
+data Callback input output state =
+    Require ( state Symbolic
+              -> input Symbolic
+              -> Bool)
+  | Update ( forall v. Ord1 v
+             => state v
+             -> input v
+             -> Var output v
+             -> state v)
+  | Ensure ( state Concrete
+             -> state Concrete
+             -> input Concrete
+             -> output
+             -> Test ())
+```
+
+## Putting it all together
+
+##
+
+```haskell
+propRegisterFirst :: ClientEnv -> IO () -> TestTree
+propRegisterFirst env reset =
+  testProperty "register-first" . property $ do
+    let
+      initialState = SimpleState False
+      cs = [ cRegisterFirst env
+                , cRegisterFirstForbidden env]
+    actions <- forAll $
+      Gen.sequential (Range.linear 1 100) initialState cs
+
+    test $ do
+      liftIO reset
+      executeSequential initialState actions
+```
+
