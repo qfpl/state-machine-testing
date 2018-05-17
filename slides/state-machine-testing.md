@@ -182,23 +182,3 @@ data Callback input output state =
              -> Test ())
 ```
 
-## Putting it all together
-
-##
-
-```haskell
-propRegisterFirst :: ClientEnv -> IO () -> TestTree
-propRegisterFirst env reset =
-  testProperty "register-first" . property $ do
-    let
-      initialState = SimpleState False
-      cs = [ cRegisterFirst env
-                , cRegisterFirstForbidden env]
-    actions <- forAll $
-      Gen.sequential (Range.linear 1 100) initialState cs
-
-    test $ do
-      liftIO reset
-      executeSequential initialState actions
-```
-
