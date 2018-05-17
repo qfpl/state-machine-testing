@@ -367,7 +367,47 @@ Given 100 test runs with up to 100 requests in each, theoretically generating 10
 requests, running them, updating state, and checking post conditions.
 </div>
 
-## Output - failure
+## Failures
+
+##
+
+```haskell
+gen (SimpleState registeredFirst) =
+  Just (RegFirst <$> genRegPlayerRandomAdmin)
+  -- if registeredFirst
+  -- then Nothing
+  -- else Just (RegFirst <$> genRegPlayerRandomAdmin)
+```
+
+##
+
+```haskell
+-- let bindings elided
+in
+  Command gen execute [
+    --Require $ \(SimpleState registeredFirst) _input ->
+    --  not registeredFirst
+    -- ...
+  ]
+```
+
+##
+
+```haskell
+  gen (SimpleState registeredFirst) =
+    Just (RegFirst <$> genRegPlayerRandomAdmin)
+    -- if registeredFirst
+    -- then Nothing
+    -- else Just (RegFirst <$> genRegPlayerRandomAdmin)
+  execute (RegFirst rp) =
+     evalEither =<< successClient env (registerFirst rp)
+in
+  Command gen execute [
+    --Require $ \(SimpleState registeredFirst) _input -> not registeredFirst
+-- elided
+```
+
+##
 
 ![register first error](images/reg-first-error.png)\
 
