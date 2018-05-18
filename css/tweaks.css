@@ -9,3 +9,7 @@ blockquote {
 h1.title {
     font-size: 125%;
 }
+
+div.no-bullets li {
+    list-style: none;
+}
