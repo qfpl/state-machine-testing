@@ -139,14 +139,14 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
      inkscape:cx="769.20739"
-     inkscape:cy="530.6965"
+     inkscape:cy="531.70665"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="2554"
-     inkscape:window-height="1434"
-     inkscape:window-x="1600"
-     inkscape:window-y="0"
+     inkscape:window-width="1914"
+     inkscape:window-height="1174"
+     inkscape:window-x="0"
+     inkscape:window-y="20"
      inkscape:window-maximized="0"
      inkscape:snap-others="true"
      inkscape:snap-object-midpoints="false"
@@ -159,7 +159,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -190,26 +190,21 @@
          x="46.097591"
          y="198.87451"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.26458332"
-         id="tspan922">actions</tspan></text>
+         id="tspan922">inputs</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        x="139.73364"
-       y="185.57559"
+       y="192.19017"
        id="text926"><tspan
          sodipodi:role="line"
-         id="tspan924"
          x="139.73364"
-         y="185.57559"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.26458332">Execute</tspan><tspan
-         sodipodi:role="line"
-         x="139.73364"
-         y="198.80476"
+         y="192.19017"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.26458332"
-         id="tspan928">actions</tspan><tspan
+         id="tspan928">Execute</tspan><tspan
          sodipodi:role="line"
          x="139.73364"
-         y="212.03392"
+         y="205.41934"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.26458332"
          id="tspan930" /></text>
     <rect
@@ -291,7 +286,7 @@
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker3054)"
-       d="m 246.73042,172.88508 42.43054,-27.36461"
+       d="m 246.73042,172.88508 36.85977,-27.36461"
        id="path2982"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="3"
@@ -299,7 +294,7 @@
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker3002)"
-       d="m 246.73042,204.6102 32.25321,26.68423"
+       d="m 246.73042,204.6102 36.56049,26.68423"
        id="path2984"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="3"
