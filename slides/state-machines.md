@@ -49,13 +49,3 @@ What else can be modelled as a state machine?
       data-background-transition="none"
     }
 
-##
-
-Property: adding a user increments user count
-
------------------   ---------------------------
-**States**          Count of users
-**Transitions**     `/register`
-**Initial state**   0
------------------   ---------------------------
-
