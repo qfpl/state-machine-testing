@@ -1,15 +1,15 @@
-# Example1: counting registrations
+# Example1: register-first
+
+## Property:
+
+`/player/register-first` only succeeds once
 
 ## State
 
 ```haskell
 newtype LeaderboardState (v :: * -> *) =
-  LeaderboardState Int
+  LeaderboardState Bool
 ```
-
-<div class="notes">
-`v` parameter for `Symbolic` or `Concrete` --- will explain more later
-</div>
 
 ## Actions
 

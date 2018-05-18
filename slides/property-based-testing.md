@@ -39,5 +39,11 @@ propReverse =
     reverse (reverse xs) === xs
 ```
 
+## { data-background-image="images/phases.png"
+      data-background-color="white"
+      data-background-size="80%"
+      data-background-transition="none"
+    }
+
 ## {data-background-image="images/hedgehog.png" data-background-size="contain"}
 

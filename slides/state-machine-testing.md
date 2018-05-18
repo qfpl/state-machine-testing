@@ -1,17 +1,45 @@
 # State machine testing
 
-## 
+## Big picture
 
-- Data type to model the state we care about
-- Data types for actions that transition states
-- A way to execute actions and update model state
-- Properties to ensure that pre and post conditions aren't violated
+- Use a state machine to model an app.
+- Randomly generate inputs.
+- Execute inputs against the app and update the model.
+- Check that the model agrees with reality.
 
 ## Enter the hedgehog
 
+## State
+
+```haskell
+data ModelState (v :: * -> *) =
+  ModelState Bool
+```
+
+## Inputs
+
+```haskell
+data ModelInput1 (v :: * -> *) =
+  ModelInput1 Parameter1 Parameter2
+
+data ModelInput2 (v :: * -> *) =
+  ModelInput2 Parameter3 Parameter4
+```
+
 <div class="notes">
-TODO: bad photoshop of a hedgehog in Enter the dragon
+- Recommend one type per input/expected output pair
+- Often correspond to endpoints in web app
+- No restrictions on inputs
+  + Multiple inputs for the one endpoint
+  + Don't have to correspond to an endpoint
 </div>
+
+## Initial state
+
+```haskell
+initialState :: ModelState v
+initialState = ModelState False
+```
 
 ## { data-background-image="images/phases.png"
       data-background-color="white"
@@ -20,52 +48,28 @@ TODO: bad photoshop of a hedgehog in Enter the dragon
     }
 
 <div class="notes">
-Same as regular property tests
+We have a model, but we need a way to use that model to do our testing
+- Generation of inputs
+- Execution of inputs 
+- Callbacks used by hedgehog
 </div>
 
-##
+## State == problems
 
-Things to consider
-
-- All commands _and their inputs_ are generated before execution.
-- Future actions will often require outputs from earlier actions.
-- Which commands are possible to run may depend on the state --- before we've produced any.
-- Shrinking might remove a command whose output is required by a future command.
-
-##
-
-`Symbolic a` &nbsp; vs &nbsp; `Concrete a`
-
-##
-
-`Symbolic` is used to...
-
-- Keep track of the values that our commands will output upon execution.
-- Decide whether a command is valid during generation.
-- Determine whether the command is still valid to run when shrinking.
+- Commands and inputs generated before execution.
+- Future inputs depend on past outputs.
+- Validity of commands depends on state.
+- Shrinking might break dependencies.
 
 <div class="notes">
-e.g. can't run a register action without having first registered the first user
-
-This applies to the third point too, but mentioning separately because handled
-separately.
+- We need a way of talking about outputs _before_ we've executed anything
 </div>
 
-##
+## Solution
 
-`Concrete` is used to...
-
-- Replace `Symbolic` s in our state as values become known.
-- Provide inputs to future commands when executing them.
-- Provide values to property tests.
+`Symbolic a` &nbsp; and &nbsp; `Concrete a`
 
 ## Commands
-
-Bundle together:
-
-- Generation of inputs
-- Execution of those inputs
-- Callbacks used by hedgehog
 
 ##
 
@@ -82,6 +86,11 @@ data Command n m state =
 
     }
 ```
+
+<div class="notes">
+In all our code, `n` is an instance of `MonadGen`
+`m` is the monad in which our tests are run and output generated
+</div>
 
 ##
 
@@ -115,14 +124,6 @@ data Command n m state =
     }
 ```
 
-## Callbacks
-
-Are one of:
-
-- Precondition to check that an action is still valid when shrinking.
-- State update --- used for both generation and execution.
-- Postcondition that checks properties hold after execution
-
 ##
 
 ```haskell
@@ -142,6 +143,10 @@ data Callback input output state =
 
 
 ```
+
+<div class="notes">
+Check that we're still in a state that allows us to run a command.
+</div>
 
 ##
 
@@ -180,5 +185,46 @@ data Callback input output state =
              -> input Concrete
              -> output
              -> Test ())
+```
+
+## HTraversable
+
+```haskell
+class HTraversable t where
+  htraverse
+    :: Applicative f
+    => (forall a. g a -> f (h a)) -> t g -> f (t h)
+```
+
+<div class="notes">
+Docs describe it as "higher order traversable functors"
+</div>
+
+##
+
+```haskell
+(            a -> f b)     -> t a -> f (t b)
+
+(forall a. g a -> f (h a)) -> t g -> f (t h)
+```
+
+##
+
+```haskell
+
+htraverse
+  :: (forall a. Symbolic a -> Either LookupError (Concrete a))
+  -> t Symbolic
+  -> Either LookupError (t Concrete)
+```
+
+##
+
+```haskell
+data ModelInput1 (v :: * -> *) =
+  ModelInput1 Parameter1 Parameter2
+
+data ModelInput2 (v :: * -> *) =
+  ModelInput2 Parameter3 Parameter4
 ```
 
