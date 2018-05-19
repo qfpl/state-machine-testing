@@ -11,7 +11,7 @@ newtype LeaderboardState (v :: * -> *) =
   LeaderboardState Bool
 ```
 
-## Actions
+## Inputs
 
 ```haskell
 newtype RegFirst (v :: * -> *) =

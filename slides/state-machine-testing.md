@@ -54,7 +54,7 @@ We have a model, but we need a way to use that model to do our testing
 - Callbacks used by hedgehog
 </div>
 
-## State == problems
+## State -> complexity
 
 - Commands and inputs generated before execution.
 - Future inputs depend on past outputs.
@@ -213,9 +213,9 @@ Docs describe it as "higher order traversable functors"
 ```haskell
 
 htraverse
-  :: (forall a. Symbolic a -> Either LookupError (Concrete a))
+  :: (forall a. Symbolic a -> Either e (Concrete a))
   -> t Symbolic
-  -> Either LookupError (t Concrete)
+  -> Either e (t Concrete)
 ```
 
 ##
