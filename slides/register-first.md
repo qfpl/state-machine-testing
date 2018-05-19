@@ -7,8 +7,8 @@
 ## State
 
 ```haskell
-newtype LeaderboardState (v :: * -> *) =
-  LeaderboardState Bool
+newtype SimpleState (v :: * -> *) =
+  SimpleState Bool
 ```
 
 ## Inputs
@@ -16,9 +16,52 @@ newtype LeaderboardState (v :: * -> *) =
 ```haskell
 newtype RegFirst (v :: * -> *) =
     RegFirst RegisterPlayer
+  deriving (Eq, Show)
+
+
+
+
+
+
+
+
+
+
+```
+
+## Inputs
+
+```haskell
+newtype RegFirst (v :: * -> *) =
+    RegFirst RegisterPlayer
+  deriving (Eq, Show)
+instance HTraversable RegFirst where
+  htraverse _ (RegFirst rp) = pure (RegFirst rp)
+
+
+
+
+
+
+
+
+```
+
+## Inputs
+
+```haskell
+newtype RegFirst (v :: * -> *) =
+    RegFirst RegisterPlayer
+  deriving (Eq, Show)
+instance HTraversable RegFirst where
+  htraverse _ (RegFirst rp) = pure (RegFirst rp)
 
 newtype RegFirstForbidden (v :: * -> *) =
   RegFirstForbidden RegisterPlayer
+  deriving (Eq, Show)
+instance HTraversable RegFirstForbidden where
+  htraverse _ (RegFirstForbidden rp) =
+    pure (RegFirstForbidden rp)
 ```
 
 ##
@@ -48,11 +91,13 @@ cRegisterFirst env =
     gen (SimpleState registeredFirst) =
       if registeredFirst
       then Nothing
-      else Just (RegFirst <$> genRegPlayerRandomAdmin)
+      else Just $
+        RegFirst <$> genRegPlayerRandomAdmin
  
  
- 
- 
+
+
+
 ```
 
 ##
@@ -65,11 +110,32 @@ cRegisterFirst env =
     gen (SimpleState registeredFirst) =
       if registeredFirst
       then Nothing
-      else Just (RegFirst <$> genRegPlayerRandomAdmin)
+      else Just $
+        RegFirst <$> genRegPlayerRandomAdmin
     execute (RegFirst rp) =
-      let mkError =
-            ("Error registering first user: " <>) . show
-      in successClient mkError env . registerFirst $ rp
+       evalEither =<< successClient env (registerFirst rp)
+
+
+
+```
+
+##
+
+**`cRegisterFirst` --- execute**
+
+```haskell
+successClient
+  :: MonadIO m
+  => ClientEnv -> ClientM a -> m (Either ServantError a)
+
+evalEither
+  :: (MonadTest m, Show x, HasCallStack)
+  => Either x a -> m a
+
+       evalEither =<< successClient env (registerFirst rp)
+
+
+
 ```
 
 ##
@@ -78,45 +144,35 @@ cRegisterFirst env =
 
 ```haskell
 cRegisterFirst env =
+  let
+    gen (SimpleState registeredFirst) =
+      if registeredFirst
+      then Nothing
+      else Just $
+        RegFirst <$> genRegPlayerRandomAdmin
+    execute (RegFirst rp) =
+       evalEither =<< successClient env (registerFirst rp)
 
 
 
-
-
-
-
-
-      in successClient mkError env . registerFirst $ rp
 ```
 
 ##
 
-```haskell
-successClient
-  :: MonadIO m
-  => (ServantError -> String)
-  -> ClientEnv
-  -> ClientM a
-  -> m a
-successClient f ce a = do
-  r <- liftIO $ runClientM a ce
-  either (fail . f) pure r
-```
-
-##
-
-**`cRegisterFirst` --- `Require`**
+**`cRegisterFirst` --- `Command`**
 
 ```haskell
 cRegisterFirst env =
-  -- let bindings elided
+  let
+    gen (SimpleState registeredFirst) =
+      if registeredFirst
+      then Nothing
+      else Just $
+        RegFirst <$> genRegPlayerRandomAdmin
+    execute (RegFirst rp) =
+       evalEither =<< successClient env (registerFirst rp)
   in
-    Command gen execute [
-      Require $ \(SimpleState registeredFirst) _input ->
-        not registeredFirst
- 
-
-    ]
+    Command gen execute [{- Callbacks to come -}]
 ```
 
 ##
@@ -182,8 +238,6 @@ cRegisterFirstForbidden env =
 
 
 
-
-
 ```
 
 ##
@@ -199,9 +253,7 @@ cRegisterFirstForbidden env =
         genRegPlayerRandomAdmin
       else Nothing
     execute (RegFirstForbidden rp) =
-      failureClient (const "Should fail with 403")
-                    env
-                    (registerFirst rp)
+      evalEither =<< failureClient env (registerFirst rp)
 ```
 
 ##
@@ -273,6 +325,7 @@ propRegisterFirst env reset =
 
 
 
+
 ```
 
 ##
@@ -283,6 +336,7 @@ propRegisterFirst env reset =
   testProperty "register-first" . property $ do
     let
       initialState = SimpleState False
+
 
 
 
@@ -303,6 +357,7 @@ propRegisterFirst env reset =
       initialState = SimpleState False
       cs = [ cRegisterFirst env
            , cRegisterFirstForbidden env]
+
 
 
 
@@ -323,6 +378,7 @@ propRegisterFirst env reset =
            , cRegisterFirstForbidden env]
     actions <- forAll $
       Gen.sequential (Range.linear 1 100) initialState cs
+
 
 
 
