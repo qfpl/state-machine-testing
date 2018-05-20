@@ -225,7 +225,6 @@ Docs describe it as "higher order traversable functors"
 ##
 
 ```haskell
-
 htraverse
   :: (forall a. Symbolic a -> Either e (Concrete a))
   -> t Symbolic
