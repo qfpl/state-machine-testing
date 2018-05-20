@@ -83,8 +83,6 @@ cRegisterFirst
 
 ##
 
-**`cRegisterFirst` --- generator**
-
 ```haskell
 cRegisterFirstGen
   :: MonadGen n
@@ -98,8 +96,6 @@ cRegisterFirstGen
 ```
 
 ##
-
-**`cRegisterFirst` --- generator**
 
 ```haskell
 cRegisterFirstGen
@@ -114,8 +110,6 @@ cRegisterFirstGen (SimpleState registeredFirst) =
 
 ##
 
-**`cRegisterFirst` --- execute**
-
 ```haskell
 cRegisterFirstExe
   :: ( MonadIO m
@@ -130,8 +124,6 @@ cRegisterFirstExe
 ```
 
 ##
-
-**`cRegisterFirst` --- execute**
 
 ```haskell
 cRegisterFirstExe
@@ -146,8 +138,6 @@ cRegisterFirstExe env (RegFirst rp) =
 ```
 
 ##
-
-**`cRegisterFirst` --- execute**
 
 ```haskell
 successClient
@@ -236,8 +226,6 @@ cRegisterFirstCallbacks =
 
 ##
 
-**`cRegisterFirst` --- `Command`**
-
 ```haskell
 cRegisterFirst
   :: ( MonadGen n
@@ -252,6 +240,37 @@ cRegisterFirst env =
           cRegisterFirstCallbacks
 ```
 
+## cRegisterFirstForbidden
+
+##
+
+```haskell
+cRegisterFirstForbiddenGen (SimpleState registeredFirst) =
+  if registeredFirst
+  then Just (RegFirstForbidden <$> genRegPlayerRandomAdmin)
+  else Nothing
+```
+
+##
+
+```haskell
+cRegisterFirstForbiddenExe (RegFirstForbidden rp) =
+  evalEither =<< failureClient env (registerFirst rp)
+```
+
+##
+
+```haskell
+cRegisterFirstForbiddenCallbacks = [
+    Require $ \(SimpleState registeredFirst) _input ->
+      registeredFirst
+  , Ensure $ \_sOld _sNew _input se ->
+      case se of
+        FailureResponse{..} -> responseStatus === forbidden403
+        _                   -> failure
+  ]
+```
+
 ## { data-background-image="images/hedgehog-running.gif"
       data-background-transition="none"
     }
@@ -260,8 +279,7 @@ cRegisterFirst env =
 
 - Start a temporary database instance
 - Fork a thread to run our server (starting with DB migration)
-- Use `servant-client` to make requests to the server
-- Reset database state before each execution
+- Provide reset action to run before each execution
 
 <div class="notes">
 Can look at how the code does this, but no more details in this talk.
@@ -384,24 +402,23 @@ requests, running them, updating state, and checking post conditions.
 </div>
 
 ## { data-background-image="images/hedgehog-failing.gif"
-      data-backround-transition="none"
+      data-background-transition="none"
     }
 
 ##
 
 ```haskell
-let
-  gen (SimpleState registeredFirst) =
-    Just (RegFirst <$> genRegPlayerRandomAdmin)
-    -- if registeredFirst
-    -- then Nothing
-    -- else Just (RegFirst <$> genRegPlayerRandomAdmin)
+cRegisterFirstGen (SimpleState registeredFirst) =
+  if registeredFirst
+  then Nothing
+  else Just (RegFirst <$> genRegPlayerRandomAdmin)
+```
 
+##
 
-
-
-
-
+```haskell
+cRegisterFirstGen (SimpleState registeredFirst) =
+  Just (RegFirst <$> genRegPlayerRandomAdmin)
 
 
 
@@ -410,39 +427,32 @@ let
 ##
 
 ```haskell
-let
-  gen (SimpleState registeredFirst) =
-    Just (RegFirst <$> genRegPlayerRandomAdmin)
-    -- if registeredFirst
-    -- then Nothing
-    -- else Just (RegFirst <$> genRegPlayerRandomAdmin)
-  execute (RegFirst rp) =
-     evalEither =<< successClient env (registerFirst rp)
-
-
-
-
-
-
-
+cRegisterFirstCallbacks =
+  [ Require $ \(SimpleState registeredFirst) _i ->
+      not registeredFirst
+  , Update $ \_sOld _i _o -> SimpleState True
+  , Ensure $ \_sOld _sNew _input out ->
+      case out of
+        (ResponsePlayer (LS.PlayerId (Auto mId))
+                        (Token token)) -> do
+          assert $ not (BS.null t)
+          assert $ maybe False (>= 0) mId
+  ]
 ```
 
 ##
 
 ```haskell
-let
-  gen (SimpleState registeredFirst) =
-    Just (RegFirst <$> genRegPlayerRandomAdmin)
-    -- if registeredFirst
-    -- then Nothing
-    -- else Just (RegFirst <$> genRegPlayerRandomAdmin)
-  execute (RegFirst rp) =
-     evalEither =<< successClient env (registerFirst rp)
-in
-  Command gen execute [
-    --Require $ \(SimpleState registeredFirst) _input ->
-    --  not registeredFirst
-    -- Update and Ensures the same
+cRegisterFirstCallbacks =
+  [ 
+    
+    Update $ \_sOld _i _o -> SimpleState True
+  , Ensure $ \_sOld _sNew _input out ->
+      case out of
+        (ResponsePlayer (LS.PlayerId (Auto mId))
+                        (Token token)) -> do
+          assert $ not (BS.null t)
+          assert $ maybe False (>= 0) mId
   ]
 ```
 
