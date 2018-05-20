@@ -37,5 +37,8 @@ Running hedgehog
 Failing hedgehog  
 [https://gifrific.com/hedgehog-running-on-wheel-fail/](https://gifrific.com/hedgehog-running-on-wheel-fail/)
 
+Enter the hedgehog__
+[https://deanoinamerica.wordpress.com/2011/06/26/from-basketball-to-the-way-of-the-dragon-nevermind/](https://deanoinamerica.wordpress.com/2011/06/26/from-basketball-to-the-way-of-the-dragon-nevermind/)
+
 :::
 

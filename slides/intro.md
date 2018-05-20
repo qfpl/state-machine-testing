@@ -1,17 +1,28 @@
 # What and why?
 
-## Testing in the large
+##
 
-<div class="notes">
-- Testing in the small with unit and property tests is a powerful tool.
-- However, there are many critical properties of a system that aren't so
-  easily or obviously tested with these tools.
-- These properties often involve how state is handled as new inputs arrive.
-</div>
+```haskell
+-- Reverse is involutive
+propReverse :: Property
+propReverse =
+  property $ do
+    xs <- forAll $ Gen.list (Range.linear 0 100) Gen.alpha
+    reverse (reverse xs) === xs
+```
+
+##
+
+What about testing the properties of a whole system?
+
+- Inputs match outputs.
+- Can't add users with the same email.
+- Can't access protected content without a token.
+
+## State machine testing!
 
 ## The Plan
 
-- Property based testing
 - State machines
 - Property based testing _for_ state machines
 - Examples

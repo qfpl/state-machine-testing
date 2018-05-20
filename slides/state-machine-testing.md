@@ -4,10 +4,11 @@
 
 - Use a state machine to model an app.
 - Randomly generate inputs.
-- Execute inputs against the app and update the model.
+- Execute inputs against the app.
+- Update the model.
 - Check that the model agrees with reality.
 
-## Enter the hedgehog
+## { data-background-image="images/enter-the-hedgehog.jpg" }
 
 ## State
 
@@ -54,22 +55,35 @@ We have a model, but we need a way to use that model to do our testing
 - Callbacks used by hedgehog
 </div>
 
-## State -> complexity
+## Things to consider
 
-- Commands and inputs generated before execution.
+- All inputs, _including their arguments_, are generated before execution.
 - Future inputs depend on past outputs.
-- Validity of commands depends on state.
+- Validity of inputs depends on state.
 - Shrinking might break dependencies.
 
-<div class="notes">
-- We need a way of talking about outputs _before_ we've executed anything
-</div>
+::: notes
+
+- _
+- e.g. Need to have registered a user to authenticate as
+- Don't even want to generate a command if state doesn't include what we need
+- Remove input that produces an output needed by a future input
+
+:::
 
 ## Solution
 
 `Symbolic a` &nbsp; and &nbsp; `Concrete a`
 
 ## Commands
+
+Comprise property based testing components:
+
+- Generation of inputs
+- Execution of inputs
+- State updates
+- Checking of properties
+- Shrinking
 
 ##
 
@@ -203,7 +217,7 @@ Docs describe it as "higher order traversable functors"
 ##
 
 ```haskell
-(            a -> f b)     -> t a -> f (t b)
+(            a -> f b    ) -> t a -> f (t b)
 
 (forall a. g a -> f (h a)) -> t g -> f (t h)
 ```

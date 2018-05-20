@@ -27,7 +27,6 @@ in
     buildPhase = ''
       cat $src/slides/title.md \
           $src/slides/intro.md \
-          $src/slides/property-based-testing.md \
           $src/slides/state-machines.md \
           $src/slides/state-machine-testing.md \
           $src/slides/leaderboard.md \

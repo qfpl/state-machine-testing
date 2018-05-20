@@ -4,6 +4,12 @@
 
 Successfully registering a player increments the player count.
 
+## { data-background-image="images/user-count.svg"
+      data-background-color="white"
+      data-background-size="80%"
+      data-background-transition="none"
+    }
+
 ## State
 
 ```haskell
@@ -44,16 +50,6 @@ data PlayerWithRsp v =
   deriving (Eq, Show)
 ```
 
-##
-
-```haskell
-instance HTraversable PlayerWithRsp where
-  htraverse f PlayerWithRsp{..} =
-    let mkP _pwrRsp = PlayerWithRsp{..}
-    in case _pwrRsp of
-        (Var vr) -> mkP <$> (Var <$> f vr)
-```
-
 ## Commands
 
 ## `cGetPlayerCount`
@@ -64,17 +60,12 @@ instance HTraversable PlayerWithRsp where
 data GetPlayerCount (v :: * -> *) =
     GetPlayerCount
   deriving (Eq, Show)
-
-instance HTraversable GetPlayerCount where
-  htraverse _ _ = pure GetPlayerCount
 ```
 
 ## 
 
 ```haskell
-Ensure $ \(LeaderboardState ps as _ms) _sNew _i c -> do
-  annotateShow ps
-  annotateShow as
+Ensure $ \(LeaderboardState ps as) _sNew _i c -> do
   length ps === fromIntegral c
   assert $ length ps >= length as
 ```
@@ -84,17 +75,66 @@ Ensure $ \(LeaderboardState ps as _ms) _sNew _i c -> do
 ##
 
 ```haskell
-[ Require $ \(LeaderboardState ps _as) _input -> null ps
-, Update $
-    \(LeaderboardState _ps _as)
-     (RegFirst lbr@LeaderboardRegistration{..}) rsp ->
-       let
-         player = mkPlayerWithRsp lbr rsp
-         players = M.singleton _lbrEmail newPlayer
-         admins = S.singleton _lbrEmail
-       in
-         LeaderboardState players admins
-]
+Update $
+  \_ (RegFirst lbr@LeaderboardRegistration{..}) rsp ->
+
+
+
+
+
+
+
+```
+##
+
+```haskell
+Update $
+  \_ (RegFirst lbr@LeaderboardRegistration{..}) rsp ->
+     let
+       player = mkPlayerWithRsp lbr rsp
+
+
+
+
+
+```
+##
+
+```haskell
+Update $
+  \_ (RegFirst lbr@LeaderboardRegistration{..}) rsp ->
+     let
+       player = mkPlayerWithRsp lbr rsp
+       players = M.singleton _lbrEmail newPlayer
+
+
+
+
+```
+##
+
+```haskell
+Update $
+  \_ (RegFirst lbr@LeaderboardRegistration{..}) rsp ->
+     let
+       player = mkPlayerWithRsp lbr rsp
+       players = M.singleton _lbrEmail newPlayer
+       admins = S.singleton _lbrEmail
+
+
+
+```
+##
+
+```haskell
+Update $
+  \_ (RegFirst lbr@LeaderboardRegistration{..}) rsp ->
+     let
+       player = mkPlayerWithRsp lbr rsp
+       players = M.singleton _lbrEmail newPlayer
+       admins = S.singleton _lbrEmail
+     in
+       LeaderboardState players admins
 ```
 
 ## `cRegister`
@@ -105,6 +145,14 @@ Ensure $ \(LeaderboardState ps as _ms) _sNew _i c -> do
 data Register (v :: * -> *) =
   Register RegisterPlayer (PlayerWithRsp v)
   deriving (Eq, Show)
+```
+
+##
+
+```haskell
+cRegisterGen rs@(LeaderboardState ps as) =
+  if null as
+  then Nothing
 
 
 
@@ -119,17 +167,18 @@ data Register (v :: * -> *) =
 ##
 
 ```haskell
-data Register (v :: * -> *) =
-  Register RegisterPlayer (PlayerWithRsp v)
-  deriving (Eq, Show)
-
-instance HTraversable Register where
-  htraverse f (Register rp PlayerWithRsp{..}) =
+cRegisterGen rs@(LeaderboardState ps as) =
+  if null as
+  then Nothing
+  else
     let
-      mkFP (Var rsp) =
-        fmap (\_pwrRsp -> PlayerWithRsp{..}) $ Var <$> f rsp
-    in
-      Register rp <$> mkFP _pwrRsp
+      maybeGenAdmin :: Maybe (n (PlayerWithRsp v))
+      maybeGenAdmin =
+        pure $ (M.!) ps <$> (Gen.element . S.toList $ as)
+
+
+
+
 ```
 
 ##
@@ -162,6 +211,63 @@ Update $
   \(LeaderboardState ps as)
    (Register rp@LeaderboardRegistration{..} _)
    rsp ->
+
+
+
+
+
+
+
+
+
+
+```
+
+##
+
+```haskell
+Update $
+  \(LeaderboardState ps as)
+   (Register rp@LeaderboardRegistration{..} _)
+   rsp ->
+     let
+       newPlayers =
+         M.insert _lbrEmail (mkPlayerWithRsp rp rsp) ps
+
+
+
+
+
+
+
+```
+
+##
+
+```haskell
+Update $
+  \(LeaderboardState ps as)
+   (Register rp@LeaderboardRegistration{..} _)
+   rsp ->
+     let
+       newPlayers =
+         M.insert _lbrEmail (mkPlayerWithRsp rp rsp) ps
+       newAdmins =
+         case _lbrIsAdmin of
+           Just True -> S.insert _lbrEmail as
+           _         -> as
+
+
+
+```
+
+##
+
+```haskell
+Update $
+  \(LeaderboardState ps as)
+   (Register rp@LeaderboardRegistration{..} _)
+   rsp ->
      let
        newPlayers =
          M.insert _lbrEmail (mkPlayerWithRsp rp rsp) ps
@@ -173,3 +279,56 @@ Update $
        LeaderboardState newPlayers newAdmins
 ```
 
+## { data-background-image="images/hedgehog-running.gif"
+      data-background-transition="none"
+    }
+
+##
+
+```haskell
+propRegisterCount env reset =
+  testProperty "register-counts" . property $ do
+
+
+
+
+
+
+
+
+
+
+```
+
+##
+
+```haskell
+propRegisterCount env reset =
+  testProperty "register-counts" . property $ do
+  let
+    initialState = LeaderboardState M.empty S.empty
+
+
+
+
+
+
+
+
+```
+
+##
+
+```haskell
+propRegisterCount env reset =
+  testProperty "register-counts" . property $ do
+  let
+    initialState = LeaderboardState M.empty S.empty
+    commands = [
+        cRegisterFirst env
+      , cRegisterFirstForbidden env
+      , cRegister env
+      , cGetPlayerCount env
+      ]
+  -- rest is the same as register-first
+```

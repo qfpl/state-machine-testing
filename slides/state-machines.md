@@ -41,11 +41,3 @@ What else can be modelled as a state machine?
 **Initial state**   App before any requests
 -----------------   ---------------------------
 
-## Example: adding users
-
-## { data-background-image="images/user-count.svg"
-      data-background-color="white"
-      data-background-size="80%"
-      data-background-transition="none"
-    }
-
