@@ -2,7 +2,7 @@
 
 ## Property:
 
-`/player/register-first` only succeeds once
+Registering our first player only succeeds once
 
 ## State
 
@@ -62,12 +62,6 @@ newtype RegFirstForbidden (v :: * -> *) =
 instance HTraversable RegFirstForbidden where
   htraverse _ (RegFirstForbidden rp) =
     pure (RegFirstForbidden rp)
-```
-
-##
-
-```haskell
-registerFirst  :: RegisterPlayer -> ClientM ResponsePlayer
 ```
 
 ## `cRegisterFirst`
@@ -240,11 +234,29 @@ cRegisterFirst env =
           cRegisterFirstCallbacks
 ```
 
-## cRegisterFirstForbidden
+## `cRegisterFirstForbidden`
 
 ##
 
 ```haskell
+cRegisterFirstForbiddenGen
+  :: MonadGen n
+  => SimpleState Symbolic
+  -> Maybe (n (RegFirstForbidden Symbolic))
+
+
+
+
+
+```
+
+##
+
+```haskell
+cRegisterFirstForbiddenGen
+  :: MonadGen n
+  => SimpleState Symbolic
+  -> Maybe (n (RegFirstForbidden Symbolic))
 cRegisterFirstForbiddenGen (SimpleState registeredFirst) =
   if registeredFirst
   then Just (RegFirstForbidden <$> genRegPlayerRandomAdmin)
@@ -254,20 +266,78 @@ cRegisterFirstForbiddenGen (SimpleState registeredFirst) =
 ##
 
 ```haskell
-cRegisterFirstForbiddenExe (RegFirstForbidden rp) =
+cRegisterFirstForbiddenExe
+  :: ( MonadIO m
+     , MonadTest m
+     )
+  => ClientEnv
+  -> RegFirstForbidden Concrete
+  -> m ServantError
+
+
+
+```
+
+##
+
+```haskell
+cRegisterFirstForbiddenExe
+  :: ( MonadIO m
+     , MonadTest m
+     )
+  => ClientEnv
+  -> RegFirstForbidden Concrete
+  -> m ServantError
+cRegisterFirstForbiddenExe env (RegFirstForbidden rp) =
   evalEither =<< failureClient env (registerFirst rp)
 ```
 
 ##
 
 ```haskell
+cRegisterFirstForbiddenCallbacks
+  :: [Callback RegFirstForbidden ServantError SimpleState]
+
+
+
+
+
+
+
+
+
+
+```
+##
+
+```haskell
+cRegisterFirstForbiddenCallbacks
+  :: [Callback RegFirstForbidden ServantError SimpleState]
+cRegisterFirstForbiddenCallbacks = [
+    Require $ \(SimpleState registeredFirst) _input ->
+      registeredFirst
+
+
+
+
+
+  ]
+```
+
+
+##
+
+```haskell
+cRegisterFirstForbiddenCallbacks
+  :: [Callback RegFirstForbidden ServantError SimpleState]
 cRegisterFirstForbiddenCallbacks = [
     Require $ \(SimpleState registeredFirst) _input ->
       registeredFirst
   , Ensure $ \_sOld _sNew _input se ->
       case se of
-        FailureResponse{..} -> responseStatus === forbidden403
-        _                   -> failure
+        FailureResponse{..} ->
+          responseStatus === forbidden403
+        _ -> failure
   ]
 ```
 
