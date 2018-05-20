@@ -86,15 +86,44 @@ cRegisterFirst
 **`cRegisterFirst` --- generator**
 
 ```haskell
-cRegisterFirst env =
-  let
-    gen (SimpleState registeredFirst) =
-      if registeredFirst
-      then Nothing
-      else Just $
-        RegFirst <$> genRegPlayerRandomAdmin
- 
- 
+cRegisterFirstGen
+  :: MonadGen n
+  => SimpleState Symbolic
+  -> Maybe (n (RegFirst Symbolic))
+
+
+
+
+
+```
+
+##
+
+**`cRegisterFirst` --- generator**
+
+```haskell
+cRegisterFirstGen
+  :: MonadGen n
+  => SimpleState Symbolic
+  -> Maybe (n (RegFirst Symbolic))
+cRegisterFirstGen (SimpleState registeredFirst) =
+  if registeredFirst
+  then Nothing
+  else Just (RegFirst <$> genRegPlayerRandomAdmin)
+```
+
+##
+
+**`cRegisterFirst` --- execute**
+
+```haskell
+cRegisterFirstExe
+  :: ( MonadIO m
+     , MonadTest m
+     )
+  => ClientEnv
+  -> RegFirst Concrete
+  -> m ResponsePlayer
 
 
 
@@ -105,18 +134,15 @@ cRegisterFirst env =
 **`cRegisterFirst` --- execute**
 
 ```haskell
-cRegisterFirst env =
-  let
-    gen (SimpleState registeredFirst) =
-      if registeredFirst
-      then Nothing
-      else Just $
-        RegFirst <$> genRegPlayerRandomAdmin
-    execute (RegFirst rp) =
-       evalEither =<< successClient env (registerFirst rp)
-
-
-
+cRegisterFirstExe
+  :: ( MonadIO m
+     , MonadTest m
+     )
+  => ClientEnv
+  -> RegFirst Concrete
+  -> m ResponsePlayer
+cRegisterFirstExe env (RegFirst rp) =
+  evalEither =<< successClient env (registerFirst rp)
 ```
 
 ##
@@ -132,7 +158,23 @@ evalEither
   :: (MonadTest m, Show x, HasCallStack)
   => Either x a -> m a
 
-       evalEither =<< successClient env (registerFirst rp)
+  evalEither =<< successClient env (registerFirst rp)
+```
+
+##
+
+```haskell
+cRegisterFirstCallbacks
+  :: [Callback RegFirst ResponsePlayer SimpleState]
+
+
+
+
+
+
+
+
+
 
 
 
@@ -140,21 +182,56 @@ evalEither
 
 ##
 
-**`cRegisterFirst` --- execute**
+```haskell
+cRegisterFirstCallbacks
+  :: [Callback RegFirst ResponsePlayer SimpleState]
+cRegisterFirstCallbacks =
+  [ Require $ \(SimpleState registeredFirst) _i ->
+      not registeredFirst
+
+
+
+
+
+
+
+  ]
+```
+
+##
 
 ```haskell
-cRegisterFirst env =
-  let
-    gen (SimpleState registeredFirst) =
-      if registeredFirst
-      then Nothing
-      else Just $
-        RegFirst <$> genRegPlayerRandomAdmin
-    execute (RegFirst rp) =
-       evalEither =<< successClient env (registerFirst rp)
+cRegisterFirstCallbacks
+  :: [Callback RegFirst ResponsePlayer SimpleState]
+cRegisterFirstCallbacks =
+  [ Require $ \(SimpleState registeredFirst) _i ->
+      not registeredFirst
+  , Update $ \_sOld _i _o -> SimpleState True
 
 
 
+
+
+
+  ]
+```
+
+##
+
+```haskell
+cRegisterFirstCallbacks
+  :: [Callback RegFirst ResponsePlayer SimpleState]
+cRegisterFirstCallbacks =
+  [ Require $ \(SimpleState registeredFirst) _i ->
+      not registeredFirst
+  , Update $ \_sOld _i _o -> SimpleState True
+  , Ensure $ \_sOld _sNew _input out ->
+      case out of
+        (ResponsePlayer (LS.PlayerId (Auto mId))
+                        (Token token)) -> do
+          assert $ not (BS.null t)
+          assert $ maybe False (>= 0) mId
+  ]
 ```
 
 ##
@@ -162,141 +239,24 @@ cRegisterFirst env =
 **`cRegisterFirst` --- `Command`**
 
 ```haskell
-cRegisterFirst env =
-  let
-    gen (SimpleState registeredFirst) =
-      if registeredFirst
-      then Nothing
-      else Just $
-        RegFirst <$> genRegPlayerRandomAdmin
-    execute (RegFirst rp) =
-       evalEither =<< successClient env (registerFirst rp)
-  in
-    Command gen execute [{- Callbacks to come -}]
-```
-
-##
-
-**`cRegisterFirst` --- `Update`**
-
-```haskell
-cRegisterFirst env =
-  -- let bindings elided
-  in
-    Command gen execute [
-      Require $ \(SimpleState registeredFirst) _input ->
-        not registeredFirst
-    , Update $ \_oldState _regFirst _output ->
-        SimpleState True
-    ]
-```
-
-##
-
-**`cRegisterFirst` --- `Ensure`**
-
-```haskell
-cRegisterFirst env =
-  -- let bindings elided
-  in
-    Command gen execute [
-    -- Require and Update elided
-    , Ensure $ \_sOld _sNew _input out ->
-        case out of
-          (ResponsePlayer (LS.PlayerId (Auto mId)) _token) ->
-            assert $ maybe False (>= 0) mId
-    , Ensure $ \_sOld _sNew _input out ->
-        case out of
-          (ResponsePlayer _pId (Token t)) ->
-            assert $ not (BS.null t)
-    ]
-```
-
-## `cRegisterFirstForbidden`
-
-```haskell
-cRegisterFirstForbidden
+cRegisterFirst
   :: ( MonadGen n
      , MonadIO m
+     , MonadTest m
      )
   => ClientEnv
   -> Command n m SimpleState
+cRegisterFirst env =
+  Command cRegisterFirstGen
+          (cRegisterFirstExe env)
+          cRegisterFirstCallbacks
 ```
+
+## { data-background-image="images/hedgehog-running.gif"
+      data-background-transition="none"
+    }
 
 ##
-
-**`cRegisterFirstForbidden` --- `gen`**
-
-```haskell
-cRegisterFirstForbidden env =
-  let
-    gen (SimpleState registeredFirst) =
-      if registeredFirst
-      then Just $ RegFirstForbidden <$>
-        genRegPlayerRandomAdmin
-      else Nothing
-
-
-
-```
-
-##
-
-**`cRegisterFirstForbidden` --- `execute`**
-
-```haskell
-cRegisterFirstForbidden env =
-  let
-    gen (SimpleState registeredFirst) =
-      if registeredFirst
-      then Just $ RegFirstForbidden <$>
-        genRegPlayerRandomAdmin
-      else Nothing
-    execute (RegFirstForbidden rp) =
-      evalEither =<< failureClient env (registerFirst rp)
-```
-
-##
-
-**`cRegisterFirstForbidden` --- `Require`**
-
-```haskell
-cRegisterFirstForbidden env =
-  -- lets elided
-  in
-    Command gen execute [
-      Require $ \(SimpleState registeredFirst) _input ->
-        registeredFirst
-      -- State shouldn't change, so no `Update`
-
-
-
-
-
-    ]
-```
-
-##
-
-**`cRegisterFirstForbidden` --- `Ensure`**
-
-```haskell
-cRegisterFirstForbidden env =
-  -- lets elided
-  in
-    Command gen execute [
-      Require $ \(SimpleState registeredFirst) _input ->
-        registeredFirst
-      -- State shouldn't change, so no `Update`
-    , Ensure $ \_sOld _sNew _input se ->
-        case se of
-          FailureResponse{..} ->
-            responseStatus === forbidden403
-          _ -> failure
-    ]
-```
-
-## Putting it all together
 
 - Start a temporary database instance
 - Fork a thread to run our server (starting with DB migration)
@@ -423,7 +383,9 @@ Given 100 test runs with up to 100 requests in each, theoretically generating 10
 requests, running them, updating state, and checking post conditions.
 </div>
 
-## Failures
+## { data-background-image="images/hedgehog-failing.gif"
+      data-backround-transition="none"
+    }
 
 ##
 

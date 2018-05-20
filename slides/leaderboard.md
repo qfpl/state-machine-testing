@@ -13,12 +13,14 @@ actions/transitions per endpoint.
 Have tried to strike a balance between "real world" and "will coherently fit in a 25 minute talk"
 </div>
 
-<div class="no-bullets">
+::: no-bullets
+
 - `/player/register-first`
 - `/player/register`
 - `/player/me`
 - `/player/player-count`
-</div>
+
+:::
 
 ##
 
