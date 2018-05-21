@@ -68,8 +68,8 @@ cMeCallbacks =
   [ Require $ \(LeaderboardState ps _) (Me p) ->
       M.member (_pwrEmail p) ps
   , Ensure $
-    \(LeaderboardState ps _) _ _ p@Player{..} -> do
-      pwr@PlayerWithRsp{..} <- eval (ps M.! _playerEmail)
+    \(LeaderboardState ps _) _ _ Player{..} -> do
+      PlayerWithRsp{..} <- eval (ps M.! _playerEmail)
 
 
 
@@ -86,8 +86,8 @@ cMeCallbacks =
   [ Require $ \(LeaderboardState ps _) (Me p) ->
       M.member (_pwrEmail p) ps
   , Ensure $
-    \(LeaderboardState ps _) _ _ p@Player{..} -> do
-      pwr@PlayerWithRsp{..} <- eval (ps M.! _playerEmail)
+    \(LeaderboardState ps _) _ _ Player{..} -> do
+      PlayerWithRsp{..} <- eval (ps M.! _playerEmail)
       let
         pwrAdmin = fromMaybe True _pwrIsAdmin
 
@@ -104,8 +104,8 @@ cMeCallbacks =
   [ Require $ \(LeaderboardState ps _) (Me p) ->
       M.member (_pwrEmail p) ps
   , Ensure $
-    \(LeaderboardState ps _) _ _ p@Player{..} -> do
-      pwr@PlayerWithRsp{..} <- eval (ps M.! _playerEmail)
+    \(LeaderboardState ps _) _ _ Player{..} -> do
+      PlayerWithRsp{..} <- eval (ps M.! _playerEmail)
       let
         pwrAdmin = fromMaybe True _pwrIsAdmin
       _rspId (concrete _pwrRsp) === LS.PlayerId _playerId

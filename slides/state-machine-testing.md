@@ -13,18 +13,21 @@
 ## State
 
 ```haskell
-data ModelState (v :: * -> *) =
-  ModelState Bool
+data LeaderboardState (v :: * -> *) =
+  LeaderboardState Bool
 ```
 
 ## Inputs
 
 ```haskell
-data ModelInput1 (v :: * -> *) =
-  ModelInput1 Parameter1 Parameter2
+data PlayerCount (v :: * -> *) =
+  PlayerCount
+  
+data RegisterFirst (v :: * -> *) =
+  RegisterFirst Registration
 
-data ModelInput2 (v :: * -> *) =
-  ModelInput2 Parameter3 Parameter4
+data Register (v :: * -> *) =
+  Register AdminToken Registration
 ```
 
 <div class="notes">
@@ -38,8 +41,8 @@ data ModelInput2 (v :: * -> *) =
 ## Initial state
 
 ```haskell
-initialState :: ModelState v
-initialState = ModelState False
+initialState :: LeaderboardState v
+initialState = LeaderboardState False
 ```
 
 ## { data-background-image="images/phases.png"
@@ -55,50 +58,175 @@ We have a model, but we need a way to use that model to do our testing
 - Callbacks used by hedgehog
 </div>
 
-## Things to consider
+## Something to consider
 
-- All inputs, _including their arguments_, are generated before execution.
-- Future inputs depend on past outputs.
-- Validity of inputs depends on state.
-- Shrinking might break dependencies.
+##
 
-::: notes
+All inputs are generated before execution.
 
-- _
-- e.g. Need to have registered a user to authenticate as
-- Don't even want to generate a command if state doesn't include what we need
-- Remove input that produces an output needed by a future input
+```haskell
 
-:::
+
+
+```
+
+##
+
+All inputs are generated before execution.
+
+```haskell
+token1 <- RegisterFirst registration1
+
+
+```
+
+##
+
+All inputs are generated before execution.
+
+```haskell
+token1 <- RegisterFirst registration1
+token2 <- Register token1 registration2
+```
+
+<!--
+##
+
+Validity of inputs depends on state.
+
+```haskell
+
+
+
+```
+
+##
+
+Validity of inputs depends on state.
+
+```haskell
+put "count" $ PlayerCount
+put "token1" $ Register (get "???") registration2
+```
+
+##
+
+Shrinking might break dependencies.
+
+```haskell
+put "token1" $ RegisterFirst registration1
+put "token2" $ Register (get "token1") registration2
+put "count" $ PlayerCount
+put "token3" $ Register (get "token1") registration3
+put "token4" $ Register (get "token2") registration4
+```
+
+##
+
+Shrinking might break dependencies.
+
+```haskell
+put "token1" $ RegisterFirst registration1
+-- put "token2" $ Register (get "token1") registration2
+put "count" $ PlayerCount
+put "token3" $ Register (get "token1") registration3
+put "token4" $ Register (get "token2") registration4
+```
+
+##
+
+Shrinking might break dependencies.
+
+```haskell
+
+-- put "token2" $ Register (get "token1") registration2
+
+
+put "token4" $ Register (get "token2") registration4
+```
+
+-->
 
 ## Solution
 
-`Symbolic a` &nbsp; and &nbsp; `Concrete a`
+```haskell
+data Var a v
+
+
+
+
+
+
+
+```
+
+## Solution
+
+```haskell
+data Var a v
+
+Var a Symbolic
+Var a Concrete
+
+
+
+
+```
+
+## Solution
+
+```haskell
+data Var a v
+
+Var a Symbolic
+Var a Concrete
+
+Symbolic :: * -> *
+Concrete :: * -> *
+```
 
 ## Commands
 
-Comprise property based testing components:
+Bundle together:
 
-- Generation of inputs
-- Execution of inputs
-- State updates
-- Checking of properties
-- Shrinking
+- Generation of an input.
+- Execution of an input.
+- Preconditions.
+- State updates.
+- Postconditions / assertions.
 
 ##
 
 ```haskell
 data Command n m state =
+  forall input output.
   Command {
-      commandGen ::
-        state Symbolic -> Maybe (n (input Symbolic))
 
 
 
 
 
 
-    }
+
+
+  }
+```
+
+##
+
+```haskell
+data Command n m state =
+  forall input output.
+  Command {
+    commandGen ::
+      state Symbolic -> Maybe (n (input Symbolic))
+
+
+
+
+
+
+  }
 ```
 
 <div class="notes">
@@ -110,32 +238,34 @@ In all our code, `n` is an instance of `MonadGen`
 
 ```haskell
 data Command n m state =
+  forall input output.
   Command {
-      commandGen ::
-        state Symbolic -> Maybe (n (input Symbolic))
+    commandGen ::
+      state Symbolic -> Maybe (n (input Symbolic))
 
-    , commandExecute ::
-        input Concrete -> m output
+  , commandExecute ::
+      input Concrete -> m output
 
 
 
-    }
+  }
 ```
 
 ##
 
 ```haskell
 data Command n m state =
+  forall input output.
   Command {
-      commandGen ::
-        state Symbolic -> Maybe (n (input Symbolic))
+    commandGen ::
+      state Symbolic -> Maybe (n (input Symbolic))
 
-    , commandExecute ::
-        input Concrete -> m output
+  , commandExecute ::
+      input Concrete -> m output
 
-    , commandCallbacks ::
-        [Callback input output state]
-    }
+  , commandCallbacks ::
+      [Callback input output state]
+  }
 ```
 
 ##
@@ -234,10 +364,13 @@ htraverse
 ##
 
 ```haskell
-data ModelInput1 (v :: * -> *) =
-  ModelInput1 Parameter1 Parameter2
+data PlayerCount (v :: * -> *) =
+  PlayerCount
+  
+data RegisterFirst (v :: * -> *) =
+  RegisterFirst Registration
 
-data ModelInput2 (v :: * -> *) =
-  ModelInput2 Parameter3 Parameter4
+data Register (v :: * -> *) =
+  Register AdminToken Registration
 ```
 

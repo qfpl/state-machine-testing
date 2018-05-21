@@ -28,8 +28,8 @@ in
       cat $src/slides/title.md \
           $src/slides/intro.md \
           $src/slides/state-machines.md \
-          $src/slides/state-machine-testing.md \
           $src/slides/leaderboard.md \
+          $src/slides/state-machine-testing.md \
           $src/slides/register-first.md \
           $src/slides/registration-count.md \
           $src/slides/registration-me.md \

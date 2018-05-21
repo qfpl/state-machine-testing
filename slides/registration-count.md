@@ -200,6 +200,23 @@ cRegisterGen rs@(LeaderboardState ps as) =
 ##
 
 ```haskell
+cRegisterExecute
+  :: ( MonadIO m
+     , MonadTest m
+     )
+  => ClientEnv
+  -> Register Concrete
+  -> m ResponsePlayer
+cRegisterExecute env (Register rp p) =
+  let
+    t = clientToken p
+  in
+    evalEither =<< successClient env (register t rp)
+```
+
+##
+
+```haskell
 [ Require $ \(LeaderboardState _ as) (Register _ p) ->
     S.member (_pwrEmail p) as
 , Require $ \(LeaderboardState ps _) (Register rp _) ->
