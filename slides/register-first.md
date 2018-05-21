@@ -22,11 +22,6 @@ newtype RegFirst (v :: * -> *) =
 
 
 
-
-
-
-
-
 ```
 
 ## Inputs
@@ -35,33 +30,10 @@ newtype RegFirst (v :: * -> *) =
 newtype RegFirst (v :: * -> *) =
     RegFirst RegisterPlayer
   deriving (Eq, Show)
-instance HTraversable RegFirst where
-  htraverse _ (RegFirst rp) = pure (RegFirst rp)
-
-
-
-
-
-
-
-
-```
-
-## Inputs
-
-```haskell
-newtype RegFirst (v :: * -> *) =
-    RegFirst RegisterPlayer
-  deriving (Eq, Show)
-instance HTraversable RegFirst where
-  htraverse _ (RegFirst rp) = pure (RegFirst rp)
 
 newtype RegFirstForbidden (v :: * -> *) =
   RegFirstForbidden RegisterPlayer
   deriving (Eq, Show)
-instance HTraversable RegFirstForbidden where
-  htraverse _ (RegFirstForbidden rp) =
-    pure (RegFirstForbidden rp)
 ```
 
 ## `cRegisterFirst`
