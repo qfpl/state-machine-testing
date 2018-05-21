@@ -70,9 +70,14 @@ instance HTraversable RegFirstForbidden where
 cRegisterFirst
   :: ( MonadGen n
      , MonadIO m
+     , MonadTest m
      )
   => ClientEnv
   -> Command n m SimpleState
+cRegisterFirst env =
+  Command cRegisterFirstGen
+          (cRegisterFirstExe env)
+          cRegisterFirstCallbacks
 ```
 
 ##
@@ -216,22 +221,6 @@ cRegisterFirstCallbacks =
           assert $ not (BS.null t)
           assert $ maybe False (>= 0) mId
   ]
-```
-
-##
-
-```haskell
-cRegisterFirst
-  :: ( MonadGen n
-     , MonadIO m
-     , MonadTest m
-     )
-  => ClientEnv
-  -> Command n m SimpleState
-cRegisterFirst env =
-  Command cRegisterFirstGen
-          (cRegisterFirstExe env)
-          cRegisterFirstCallbacks
 ```
 
 ## `cRegisterFirstForbidden`
