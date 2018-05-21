@@ -87,7 +87,7 @@ Update $
   \_ (RegFirst lbr@LeaderboardRegistration{..}) rsp ->
      let
        player = mkPlayerWithRsp lbr rsp
-       players = M.singleton _lbrEmail newPlayer
+       players = M.singleton _lbrEmail player
 
 
 
@@ -100,7 +100,7 @@ Update $
   \_ (RegFirst lbr@LeaderboardRegistration{..}) rsp ->
      let
        player = mkPlayerWithRsp lbr rsp
-       players = M.singleton _lbrEmail newPlayer
+       players = M.singleton _lbrEmail player
        admins = S.singleton _lbrEmail
 
 
@@ -113,7 +113,7 @@ Update $
   \_ (RegFirst lbr@LeaderboardRegistration{..}) rsp ->
      let
        player = mkPlayerWithRsp lbr rsp
-       players = M.singleton _lbrEmail newPlayer
+       players = M.singleton _lbrEmail player
        admins = S.singleton _lbrEmail
      in
        LeaderboardState players admins
