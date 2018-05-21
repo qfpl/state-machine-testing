@@ -22,23 +22,6 @@ Have tried to strike a balance between "real world" and "will coherently fit in 
 
 :::
 
-##
-
-```haskell
-type PlayerAPI auths =
-  "player" :> (
-       Auth auths PlayerSession :> "register"
-       :> ReqBody '[JSON] RegisterPlayer
-       :> Post '[JSON] ResponsePlayer
-  :<|> "register-first"
-       :> ReqBody '[JSON] RegisterPlayer
-       :> Post '[JSON] ResponsePlayer
-  :<|> Auth auths PlayerSession :> "me"
-       :> Get '[JSON] Player
-  :<|> "count" :> Get '[JSON] PlayerCount
-  )
-```
-
 ## Properties
 
 - Can only `register-first` once
