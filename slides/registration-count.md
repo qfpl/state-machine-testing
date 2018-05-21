@@ -52,24 +52,6 @@ data PlayerWithRsp v =
 
 ## Commands
 
-## `cGetPlayerCount`
-
-##
-
-```haskell
-data GetPlayerCount (v :: * -> *) =
-    GetPlayerCount
-  deriving (Eq, Show)
-```
-
-## 
-
-```haskell
-Ensure $ \(LeaderboardState ps as) _sNew _i c -> do
-  length ps === fromIntegral c
-  assert $ length ps >= length as
-```
-
 ## `cRegFirst`
 
 ##
@@ -135,6 +117,24 @@ Update $
        admins = S.singleton _lbrEmail
      in
        LeaderboardState players admins
+```
+
+## `cGetPlayerCount`
+
+##
+
+```haskell
+data GetPlayerCount (v :: * -> *) =
+    GetPlayerCount
+  deriving (Eq, Show)
+```
+
+## 
+
+```haskell
+Ensure $ \(LeaderboardState ps as) _sNew _i c -> do
+  length ps === fromIntegral c
+  assert $ length ps >= length as
 ```
 
 ## `cRegister`

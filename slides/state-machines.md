@@ -29,15 +29,15 @@
 <!-- TODO: if you have time, have a slide per example with a state machine diagram -->
 What else can be modelled as a state machine?
 
-- Traffic lights
-- Automated checkouts
+- Games
+- Routing
 - Web applications
 
 ## Web app state machine
 
 -----------------   ---------------------------
 **States**          Database + in-memory
-**Transitions**     HTTP requests
+**Inputs**          HTTP requests
 **Initial state**   App before any requests
 -----------------   ---------------------------
 

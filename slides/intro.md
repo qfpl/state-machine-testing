@@ -15,9 +15,9 @@ propReverse =
 
 What about testing the properties of a whole system?
 
-- Inputs match outputs.
-- Can't add users with the same email.
-- Can't access protected content without a token.
+- Retrieved data matches submitted data.
+- Uniqueness constraints.
+- Users only see what they're supposed to.
 
 ## State machine testing!
 
