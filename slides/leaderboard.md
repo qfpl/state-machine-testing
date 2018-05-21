@@ -27,5 +27,4 @@ Have tried to strike a balance between "real world" and "will coherently fit in 
 - Can only `register-first` once
 - Player count matches number of successful registrations
 - Retrieving a player matches what was `POST`ed
-- Player identifiers (emails) remain unique
 
