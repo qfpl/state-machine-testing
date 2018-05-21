@@ -332,10 +332,11 @@ cRegisterFirstForbiddenCallbacks = [
 
 ## `propRegisterFirst`
 
+##
+
 ```haskell
 propRegisterFirst :: ClientEnv -> IO () -> TestTree
 propRegisterFirst env reset =
-
 
 
 
@@ -357,7 +358,6 @@ propRegisterFirst env reset =
   testProperty "register-first" . property $ do
     let
       initialState = SimpleState False
-
 
 
 
@@ -378,7 +378,6 @@ propRegisterFirst env reset =
       initialState = SimpleState False
       cs = [ cRegisterFirst env
            , cRegisterFirstForbidden env]
-
 
 
 
@@ -399,7 +398,6 @@ propRegisterFirst env reset =
            , cRegisterFirstForbidden env]
     actions <- forAll $
       Gen.sequential (Range.linear 1 100) initialState cs
-
 
 
 
