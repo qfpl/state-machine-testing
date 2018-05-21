@@ -282,10 +282,6 @@ Update $
        LeaderboardState newPlayers newAdmins
 ```
 
-## { data-background-image="images/hedgehog-running.gif"
-      data-background-transition="none"
-    }
-
 ##
 
 ```haskell
@@ -335,3 +331,12 @@ propRegisterCount env reset =
       ]
   -- rest is the same as register-first
 ```
+
+## { data-background-image="images/hedgehog-running.gif"
+      data-background-transition="none"
+    }
+    
+## { data-background-image="images/register-counts-success.png"
+      data-background-size="80%"
+    }
+

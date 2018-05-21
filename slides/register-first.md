@@ -330,23 +330,7 @@ cRegisterFirstForbiddenCallbacks = [
   ]
 ```
 
-## { data-background-image="images/hedgehog-running.gif"
-      data-background-transition="none"
-    }
-
-##
-
-- Start a temporary database instance
-- Fork a thread to run our server (starting with DB migration)
-- Provide reset action to run before each execution
-
-<div class="notes">
-Can look at how the code does this, but no more details in this talk.
-
-"before each execution" means before first run _and_ before any shrinks get run
-</div>
-
-##
+## `propRegisterFirst`
 
 ```haskell
 propRegisterFirst :: ClientEnv -> IO () -> TestTree
@@ -440,31 +424,37 @@ propRegisterFirst env reset =
       executeSequential initialState actions
 ```
 
+## Test setup
+
+- Start a temporary database instance
+- Fork a thread to run our server (starting with DB migration)
+- Run properties with `ClientEnv`
+
+## { data-background-image="images/hedgehog-running.gif"
+      data-background-transition="none"
+    }
+
+
+
+<div class="notes">
+Can look at how the code does this, but no more details in this talk.
+
+"before each execution" means before first run _and_ before any shrinks get run
+</div>
+
 <div class="notes">
 `property` defaults to 100 test passes required
 </div>
 
-## Output - success
-
-```
-leaderboard
-  registration-simple
-    register-first: OK (6.96s)
-      OK
-
-All 1 tests passed (6.97s)
-```
-
-<div class="notes">
-Given 100 test runs with up to 100 requests in each, theoretically generating 10,000
-requests, running them, updating state, and checking post conditions.
-</div>
 
 ## { data-background-image="images/hedgehog-failing.gif"
       data-background-transition="none"
     }
 
-##
+## {data-background-image="images/register-first-success.png"
+     data-background-size="80%"
+    }
+
 
 ```haskell
 cRegisterFirstGen (SimpleState registeredFirst) =
@@ -515,11 +505,11 @@ cRegisterFirstCallbacks =
   ]
 ```
 
-##
+## {data-background-image="images/reg-first-error.png"
+     data-background-size="80%"
+    }
 
-![register first error](images/reg-first-error.png)\
-
-##
-
-![register first error commands](images/reg-first-error-cmds.png)\
+## {data-background-image="images/reg-first-error-cmds.png"
+     data-background-size="80%"
+    }
 
