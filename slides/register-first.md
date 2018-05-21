@@ -419,9 +419,8 @@ propRegisterFirst env reset =
     actions <- forAll $
       Gen.sequential (Range.linear 1 100) initialState cs
 
-    test $ do
-      liftIO reset
-      executeSequential initialState actions
+    liftIO reset
+    executeSequential initialState actions
 ```
 
 ## Test setup
@@ -434,27 +433,15 @@ propRegisterFirst env reset =
       data-background-transition="none"
     }
 
-
-
-<div class="notes">
-Can look at how the code does this, but no more details in this talk.
-
-"before each execution" means before first run _and_ before any shrinks get run
-</div>
-
-<div class="notes">
-`property` defaults to 100 test passes required
-</div>
-
+## {data-background-image="images/register-first-success.png"
+     data-background-size="80%"
+    }
 
 ## { data-background-image="images/hedgehog-failing.gif"
       data-background-transition="none"
     }
 
-## {data-background-image="images/register-first-success.png"
-     data-background-size="80%"
-    }
-
+##
 
 ```haskell
 cRegisterFirstGen (SimpleState registeredFirst) =
