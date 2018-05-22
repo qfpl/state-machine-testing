@@ -26,7 +26,7 @@ cMeGen
   => LeaderboardState Symbolic
   -> Maybe (n (Me Symbolic))
 cMeGen (LeaderboardState ps _) =
-  fmap Me <$> genPlayerWithRsp ps
+  (fmap . fmap) Me (genPlayerWithRsp ps)
 ```
 
 ##
