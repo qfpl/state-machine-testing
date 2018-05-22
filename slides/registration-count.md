@@ -217,11 +217,8 @@ cRegisterExecute env (Register rp p) =
 ##
 
 ```haskell
-[ Require $ \(LeaderboardState _ as) (Register _ p) ->
-    S.member (_pwrEmail p) as
-, Require $ \(LeaderboardState ps _) (Register rp _) ->
-    M.notMember (_lbrEmail rp) ps
-]
+Require $ \(LeaderboardState _ as) (Register _ p) ->
+  S.member (_pwrEmail p) as
 ```
 
 ##
