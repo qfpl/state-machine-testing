@@ -41,6 +41,7 @@ The basic outline of the talk is as follows
     + Round trip property -- retrieved data matches what was submitted.
     + Uniqueness -- cannot add multiple users with the same identifier.
     + Transaction conflict resulting from concurrent requests.
+    + Testing a non-haskell web application
 
 The number and complexity of examples will depend on the time available. For example, parallel examples may not be covered.
 
