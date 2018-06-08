@@ -24,9 +24,9 @@ he'll take you on a guided tour of hedgehog's state machine testing facilities. 
 present a series of examples to show off what you can do and hopefully give you enough ideas to start
 applying this tool to your own projects. The application being tested will be a servant web
 application, and examples will include testing fundamentals such as content creation and deletion,
-uniqueness constraints, and authentication. If time permits, Andrew will demonstrate how parallel 
-state machine tests can be used to find race conditions and other issues found in systems that allow 
-concurrent access to state (e.g. most web applications).
+uniqueness constraints, and authentication. Finally, Andrew will demonstrate how parallel
+state machine tests can be used to find issues found in systems that allow concurrent access to state
+(e.g. most web applications).
 
 An intermediate knowledge of Haskell and familiarity with property based testing will be
 beneficial,but not essential. The slides and demo application will be available after the talk for
@@ -53,12 +53,13 @@ The basic outline of the talk is as follows
     + Overview of hedgehog's approach.
     + Explanation of key data types.
     + Explanation of hedgehog's variable handling.
+    + Parallel state machine testing
 - Examples:
     + A simple test where the state is a boolean flag.
     + Ensure the count of users matches the number of successful registrations.
     + Round trip property -- retrieved data matches what was submitted.
-    + Uniqueness -- cannot add multiple users with the same identifier
-    + Race conditions 
+    + Uniqueness -- cannot add multiple users with the same identifier.
+    + Transaction conflict resulting from concurrent requests.
 
 The number and complexity of examples will depend on the time available. For example, parallel examples
 may not be covered.
