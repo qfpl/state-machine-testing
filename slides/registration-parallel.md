@@ -87,7 +87,46 @@ propRegisterCount env reset =
     }
     
 ## { data-background-image="images/para-failure.png"
-      data-background-size="80%"
+      data-background-size="40%"
       data-background-transition="none"
     }
+    
+## { data-background-image="images/para-fail-error.png"
+      data-background-size="70%"
+      data-background-transition="none"
+    }
+    
+##
+
+```haskell
+cGetPlayerCountGen
+  :: MonadGen n
+  => LeaderboardState Symbolic
+  -> Maybe (n (GetPlayerCount Symbolic))
+cGetPlayerCountGen (LeaderboardState ps _) =
+  Just (pure GetPlayerCount)
+
+
+
+```
+
+##
+
+```haskell
+cGetPlayerCountGen
+  :: MonadGen n
+  => LeaderboardState Symbolic
+  -> Maybe (n (GetPlayerCount Symbolic))
+cGetPlayerCountGen (LeaderboardState ps _) =
+  if not (null ps)
+  then Just (pure GetPlayerCount)
+  else Nothing
+```
+
+## { data-background-image="images/para-fail2.png"
+      data-background-size="30%"
+      data-background-transition="none"
+    }
+    
+
 

@@ -22,6 +22,9 @@ Hedgehog on GitHub
 Tim Humphries' blog post  
 [https://teh.id.au/posts/2017/07/15/state-machine-testing/index.html](https://teh.id.au/posts/2017/07/15/state-machine-testing/index.html)
 
+Jacob Stanley's YLJ talk  
+[https://www.youtube.com/watch?v=AIv_9T0xKEo](https://www.youtube.com/watch?v=AIv_9T0xKEo)
+
 :::
 
 ## Images
