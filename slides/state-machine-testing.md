@@ -151,6 +151,7 @@ put "token4" $ Register (get "token2") registration4
 
 ```haskell
 data Var a v
+  Var (v a)
 
 
 
@@ -164,25 +165,27 @@ data Var a v
 
 ```haskell
 data Var a v
-
-Var a Symbolic
-Var a Concrete
-
-
-
-
-```
-
-## Solution
-
-```haskell
-data Var a v
-
-Var a Symbolic
-Var a Concrete
+  Var (v a)
 
 Symbolic :: * -> *
 Concrete :: * -> *
+
+
+
+
+```
+
+## Solution
+
+```haskell
+data Var a v
+  Var (v a)
+
+Symbolic :: * -> *
+Concrete :: * -> *
+
+Var a Symbolic
+Var a Concrete
 ```
 
 ## Commands
@@ -366,11 +369,12 @@ htraverse
 ```haskell
 data PlayerCount (v :: * -> *) =
   PlayerCount
+instance HTraversable PlayerCount where
+  htraverse _ _ = pure PlayerCount
   
 data RegisterFirst (v :: * -> *) =
   RegisterFirst Registration
-
-data Register (v :: * -> *) =
-  Register AdminToken Registration
+instance HTraversable RegFirst where
+  htraverse _ (RegFirst rp) = pure (RegFirst rp)
 ```
 
